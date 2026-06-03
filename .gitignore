@@ -1,14 +1,17 @@
 # Dependencies
-frontend/node_modules/
+node_modules/
+venv/
 backend/venv/
 
 # Build output
+dist/
 frontend/dist/
 
 # Python
-backend/__pycache__/
-backend/*.pyc
+__pycache__/
 *.pyc
+*.pyo
+*.egg-info/
 
 # Environment files
 .env
@@ -20,6 +23,7 @@ backend/*.pyc
 .vscode/
 *.swp
 *.swo
+*.swn
 
 # OS
 .DS_Store
@@ -32,3 +36,6 @@ npm-debug.log*
 # Vite
 frontend/vite-error.txt
 frontend/vite-output.txt
+
+# OpenCode
+.omo/

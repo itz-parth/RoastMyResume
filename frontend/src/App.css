@@ -1,12 +1,10 @@
 @import "tailwindcss";
 
-/* ── Design System: Tailwind v4 Theme Tokens ── */
+/* theme variables */
 @theme {
-  /* Fonts */
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, monospace;
 
-  /* Brand Colors */
   --color-brand-50: #f5f3ff;
   --color-brand-100: #ede9fe;
   --color-brand-200: #ddd6fe;
@@ -18,25 +16,21 @@
   --color-brand-800: #5b21b6;
   --color-brand-900: #4c1d95;
 
-  /* Surface Colors */
   --color-surface-base: #0a0a0b;
   --color-surface-card: #121214;
   --color-surface-elevated: #1a1a1e;
   --color-surface-hover: #222228;
   --color-surface-glass: rgba(18, 18, 20, 0.8);
 
-  /* Border Colors */
   --color-border-subtle: #222226;
   --color-border-default: #2a2a30;
   --color-border-strong: #33333a;
 
-  /* Text Colors */
   --color-text-primary: #fafafa;
   --color-text-secondary: #a1a1aa;
   --color-text-tertiary: #71717a;
   --color-text-muted: #52525b;
 
-  /* Accent Semantic Colors */
   --color-accent-purple: #8b5cf6;
   --color-accent-blue: #3b82f6;
   --color-accent-cyan: #06b6d4;
@@ -45,13 +39,11 @@
   --color-accent-red: #ef4444;
   --color-accent-rose: #f43f5e;
 
-  /* Score Colors */
   --color-score-excellent: #22c55e;
   --color-score-strong: #3b82f6;
   --color-score-average: #f59e0b;
   --color-score-poor: #ef4444;
 
-  /* Shadows */
   --shadow-glow-sm: 0 0 20px -4px rgba(139, 92, 246, 0.15);
   --shadow-glow-md: 0 0 30px -8px rgba(139, 92, 246, 0.2);
   --shadow-glow-lg: 0 0 60px -12px rgba(139, 92, 246, 0.25);
@@ -59,7 +51,6 @@
   --shadow-card-hover: 0 0 0 1px rgba(139, 92, 246, 0.15), 0 8px 40px -12px rgba(0, 0, 0, 0.5);
   --shadow-elevated: 0 0 0 1px rgba(255, 255, 255, 0.06), 0 8px 32px -12px rgba(0, 0, 0, 0.5);
 
-  /* Animation */
   --animate-glow-pulse: glow-pulse 4s ease-in-out infinite;
   --animate-float: float 6s ease-in-out infinite;
   --animate-spin-slow: spin 8s linear infinite;
@@ -102,7 +93,7 @@
   from { stroke-dashoffset: 283; }
 }
 
-/* ── Base Styles ── */
+/* base styles */
 html {
   scroll-behavior: smooth;
 }
@@ -115,7 +106,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* ── Scrollbar ── */
+/* custom scrollbar */
 ::-webkit-scrollbar {
   width: 6px;
 }
@@ -130,7 +121,7 @@ body {
   background: var(--color-border-strong);
 }
 
-/* ── Shared Component Styles ── */
+/* shared component styles */
 
 .glass-card {
   background: var(--color-surface-glass);
@@ -187,7 +178,7 @@ body {
 .stagger-fade-in > *:nth-child(6) { animation-delay: 400ms; }
 .stagger-fade-in > *:nth-child(7) { animation-delay: 480ms; }
 
-/* ── ATS Circular Progress ── */
+/* ats circular progress ring */
 .ats-ring-bg {
   stroke: var(--color-border-subtle);
 }
@@ -199,7 +190,7 @@ body {
   transition: stroke-dashoffset 1.5s cubic-bezier(0.4, 0, 0.2, 1), stroke 0.5s ease;
 }
 
-/* ── Drag & Drop Zone ── */
+/* drag and drop zone */
 .drop-zone {
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -209,7 +200,7 @@ body {
   background: rgba(139, 92, 246, 0.05);
 }
 
-/* ── Button Glow ── */
+/* glow effect on buttons */
 .btn-glow {
   position: relative;
   overflow: hidden;

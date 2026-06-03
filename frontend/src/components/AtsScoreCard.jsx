@@ -37,7 +37,6 @@ const AtsScoreCard = ({ score }) => {
       </div>
 
       <div className="flex flex-col items-center">
-        {/* Circular Progress */}
         <div className="relative w-36 h-36 sm:w-40 sm:h-40 mb-4">
           <svg className="w-full h-full transform -rotate-90" viewBox="0 0 128 128">
             <circle
@@ -75,7 +74,6 @@ const AtsScoreCard = ({ score }) => {
           {getScoreLabel(score)}
         </span>
 
-        {/* Score bar */}
         <div className="w-full mt-6 grid grid-cols-4 gap-1">
           {[
             { range: "0-59", label: "Poor", color: "bg-accent-red" },

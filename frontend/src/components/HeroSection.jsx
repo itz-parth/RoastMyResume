@@ -1,7 +1,6 @@
 const HeroSection = ({ onCtaClick }) => {
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-16">
-      {/* Animated Background */}
       <div className="absolute inset-0 animated-gradient-bg" />
       <div className="absolute inset-0">
         <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-accent-purple/10 rounded-full blur-3xl animate-glow-pulse" />
@@ -9,7 +8,6 @@ const HeroSection = ({ onCtaClick }) => {
         <div className="absolute top-1/2 left-1/2 w-64 h-64 bg-accent-cyan/5 rounded-full blur-3xl animate-float" style={{ animationDelay: '-4s' }} />
       </div>
 
-      {/* Subtle grid overlay */}
       <div
         className="absolute inset-0 opacity-[0.03]"
         style={{
@@ -18,7 +16,6 @@ const HeroSection = ({ onCtaClick }) => {
         }}
       />
 
-      {/* Content */}
       <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 text-center">
         <div className="inline-flex items-center gap-2 px-4 py-1.5 mb-8 text-xs font-medium text-text-secondary bg-surface-elevated/80 backdrop-blur-sm rounded-full border border-border-subtle">
           <span className="w-1.5 h-1.5 rounded-full bg-accent-purple animate-glow-pulse" />
@@ -54,7 +51,6 @@ const HeroSection = ({ onCtaClick }) => {
           </button>
         </div>
 
-        {/* Mock Analysis Preview */}
         <div className="mt-16 max-w-lg mx-auto animate-fade-in">
           <div className="glass-card rounded-2xl p-5 text-left">
             <div className="flex items-center justify-between mb-4">
@@ -76,7 +72,6 @@ const HeroSection = ({ onCtaClick }) => {
         </div>
       </div>
 
-      {/* Scroll indicator */}
       <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-float">
         <svg className="w-5 h-5 text-text-muted" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
           <path strokeLinecap="round" strokeLinejoin="round" d="M19 14l-7 7m0 0l-7-7m7 7V3" />

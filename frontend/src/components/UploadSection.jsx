@@ -1,6 +1,12 @@
 import { useState, useRef, useCallback } from "react";
 import axios from "axios";
 
+const STAGES = [
+  { id: "extract", label: "Parsing resume structure..." },
+  { id: "analyze", label: "Analyzing content & scoring..." },
+  { id: "roast", label: "Crafting your roast..." },
+];
+
 const UploadSection = ({ onFileAnalyzed, setError }) => {
   const [file, setFile] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -106,7 +112,6 @@ const UploadSection = ({ onFileAnalyzed, setError }) => {
           </p>
         </div>
 
-        {/* Drop Zone */}
         <div
           onDrop={handleDrop}
           onDragOver={handleDragOver}
@@ -142,10 +147,45 @@ const UploadSection = ({ onFileAnalyzed, setError }) => {
                   </defs>
                 </svg>
               </div>
-              <div>
-                <p className="text-text-primary font-medium mb-1">Analyzing your resume...</p>
-                <p className="text-text-muted text-sm">AI recruiters are roasting it right now</p>
+
+              <div className="max-w-sm mx-auto space-y-3">
+                {STAGES.map((stage, i) => {
+                  const stageProgress = uploadProgress / 100;
+                  const stageStart = i / STAGES.length;
+                  const stageEnd = (i + 1) / STAGES.length;
+                  const isActive = stageProgress >= stageStart && stageProgress < stageEnd;
+                  const isComplete = stageProgress >= stageEnd;
+                  return (
+                    <div key={stage.id} className="flex items-center gap-3">
+                      <div className={`w-6 h-6 rounded-full flex items-center justify-center transition-all duration-300 ${
+                        isComplete
+                          ? "bg-accent-green/20 text-accent-green"
+                          : isActive
+                          ? "bg-accent-purple/20 text-accent-purple"
+                          : "bg-surface-elevated text-text-muted"
+                      }`}>
+                        {isComplete ? (
+                          <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                          </svg>
+                        ) : (
+                          <span className="text-xs font-bold">{i + 1}</span>
+                        )}
+                      </div>
+                      <span className={`text-sm transition-colors duration-300 ${
+                        isComplete
+                          ? "text-text-primary"
+                          : isActive
+                          ? "text-text-primary font-medium"
+                          : "text-text-muted"
+                      }`}>
+                        {stage.label}
+                      </span>
+                    </div>
+                  );
+                })}
               </div>
+
               <div className="max-w-xs mx-auto bg-surface-elevated rounded-full h-1.5 overflow-hidden">
                 <div
                   className="h-full rounded-full glow-gradient transition-all duration-300 ease-out"
@@ -182,7 +222,6 @@ const UploadSection = ({ onFileAnalyzed, setError }) => {
           )}
         </div>
 
-        {/* Trust indicators */}
         <div className="flex items-center justify-center gap-6 mt-8 text-xs text-text-muted">
           <span className="flex items-center gap-1.5">
             <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>

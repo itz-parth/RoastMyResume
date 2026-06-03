@@ -1,8 +1,29 @@
 import AtsScoreCard from "./AtsScoreCard";
-import { RoastCard, StrengthCard, WeaknessCard, KeywordsCard, ImprovedBulletsCard, VerdictCard } from "./ResultCard";
+import ScoreBreakdown from "./ScoreBreakdown";
+import SectionFeedback from "./SectionFeedback";
+import QuickWinsCard from "./QuickWinsCard";
+import {
+  RoastCard,
+  StrengthCard,
+  WeaknessCard,
+  KeywordsCard,
+  ImprovedBulletsCard,
+  VerdictCard,
+} from "./ResultCard";
 
 const ResultsSection = ({ data }) => {
   if (!data) return null;
+
+  // backend sends missing_keywords as an object, but the card needs a flat array
+  const keywordList = data.missing_keywords
+    ? typeof data.missing_keywords === "object" && !Array.isArray(data.missing_keywords)
+      ? [
+          ...(data.missing_keywords.technical || []),
+          ...(data.missing_keywords.soft_skills || []),
+          ...(data.missing_keywords.domain_specific || []),
+        ]
+      : data.missing_keywords
+    : [];
 
   return (
     <section id="results" className="relative py-24 sm:py-32">
@@ -19,7 +40,6 @@ const ResultsSection = ({ data }) => {
         </div>
 
         <div className="space-y-6 stagger-fade-in">
-          {/* Top Row: ATS Score + Roast */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             <div className="lg:col-span-1">
               <AtsScoreCard score={data.ats_score} />
@@ -29,7 +49,8 @@ const ResultsSection = ({ data }) => {
             </div>
           </div>
 
-          {/* Summary */}
+          <ScoreBreakdown breakdown={data.score_breakdown} />
+
           {data.summary && (
             <div className="glass-card rounded-2xl p-6 sm:p-8">
               <h3 className="text-sm font-semibold text-text-tertiary uppercase tracking-wider mb-3">
@@ -39,19 +60,19 @@ const ResultsSection = ({ data }) => {
             </div>
           )}
 
-          {/* Strengths & Weaknesses */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <StrengthCard strengths={data.strengths} />
             <WeaknessCard weaknesses={data.weaknesses} />
           </div>
 
-          {/* Missing Keywords */}
-          <KeywordsCard keywords={data.missing_keywords} />
+          <SectionFeedback sectionFeedback={data.section_feedback} />
 
-          {/* Improved Bullets */}
+          <KeywordsCard keywords={keywordList} />
+
           <ImprovedBulletsCard bullets={data.improved_bullets} />
 
-          {/* Final Verdict */}
+          <QuickWinsCard quickWins={data.quick_wins} />
+
           <VerdictCard verdict={data.final_verdict} roastLevel={data.roast_level} />
         </div>
       </div>

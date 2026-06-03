@@ -59,7 +59,6 @@ const App = () => {
 
       {response && <ResultsSection data={response} />}
 
-      {/* Footer */}
       <footer className="relative border-t border-border-subtle py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-2">
