@@ -3,7 +3,8 @@ import json
 import re
 from typing import Any
 
-import pdfplumber
+import pypdf
+import docx
 from fastapi import HTTPException, UploadFile
 
 
@@ -34,36 +35,44 @@ def call_llm(
     return completion.choices[0].message.content
 
 
-async def extract_text_from_pdf(file: UploadFile) -> str:
-    if not file.filename or not file.filename.lower().endswith(".pdf"):
-        raise HTTPException(
-            status_code=400,
-            detail="Only PDF files are supported",
-        )
+async def extract_text(file: UploadFile) -> str:
+    filename = file.filename.lower()
 
     content = await file.read()
+    text = ''
 
-    if not content:
+    try:
+        if filename.endswith(".pdf"):
+            pdf_reader = pypdf.PdfReader(io.BytesIO(content))
+            
+            for page in pdf_reader.pages:
+                extracted = page.extract_text()
+                if extracted:
+                    text += extracted + "\n"
+
+        elif filename.endswith(".docx"):
+            doc = docx.Document(io.BytesIO(content))
+            text = "\n".join([para.text for para in doc.paragraphs])
+
+        elif filename.endswith(".txt"):
+            text = content.decode("utf-8")
+
+        else:
+            raise HTTPException(
+                status_code = 400,
+                detail = "Unsupported format. Please upload PDF, DOCX, or TXT."
+            ) 
+
+    except Exception as e:
         raise HTTPException(
-            status_code=400,
-            detail="Uploaded file is empty",
+            status_code = 500,
+            detail = f"Error reading file: {str(e)}"
         )
-
-    text_parts = []
-
-    with pdfplumber.open(io.BytesIO(content)) as pdf:
-        for page in pdf.pages:
-            extracted = page.extract_text()
-
-            if extracted:
-                text_parts.append(extracted)
-
-    text = "\n".join(text_parts)
 
     if not text.strip():
         raise HTTPException(
-            status_code=400,
-            detail="Could not extract text from PDF. Make sure it's a text-based PDF, not scanned.",
+            status_code =   400,
+            details = "Could not extract text. If this is a scanned/image-based document, please upload a text-based file."
         )
 
     return text

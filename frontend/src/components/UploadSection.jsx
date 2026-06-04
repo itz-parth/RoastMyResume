@@ -68,7 +68,8 @@ const UploadSection = ({ onFileAnalyzed, setError }) => {
     e.stopPropagation();
     setDragActive(false);
     const droppedFile = e.dataTransfer?.files?.[0];
-    if (droppedFile?.type === "application/pdf") {
+    const allowedTypes = ["application/pdf", "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "text/plain"];  
+    if (allowedTypes.includes(droppedFile?.type)) {
       setFile(droppedFile);
       handleAnalyze(droppedFile);
     }
@@ -128,7 +129,7 @@ const UploadSection = ({ onFileAnalyzed, setError }) => {
           <input
             ref={inputRef}
             type="file"
-            accept=".pdf"
+            accept=".pdf, .docx, .txt"
             onChange={handleFileSelect}
             className="hidden"
           />
@@ -207,7 +208,7 @@ const UploadSection = ({ onFileAnalyzed, setError }) => {
                 <p className="text-text-muted text-sm">
                   {file
                     ? `Ready for analysis (${(file.size / 1024).toFixed(0)} KB)`
-                    : "Supports PDF files only"}
+                    : "Supports PDF, DOCX, and TXT files"}
                 </p>
               </div>
               {!file && (
@@ -215,7 +216,7 @@ const UploadSection = ({ onFileAnalyzed, setError }) => {
                   <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75l3 3m0 0l3-3m-3 3v-7.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
-                  PDF only
+                  PDF, DOCX, or TXT only
                 </span>
               )}
             </div>

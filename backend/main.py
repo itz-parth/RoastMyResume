@@ -5,7 +5,7 @@ from fastapi import FastAPI, File, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from openai import OpenAI
 
-from utils import extract_text_from_pdf
+from utils import extract_text
 from services.resume_service import process_resume
 
 load_dotenv()
@@ -27,7 +27,7 @@ client = OpenAI(
 @app.post("/analyze")
 async def analyze(file: UploadFile = File(...)):
     
-    raw_text = await extract_text_from_pdf(file)
+    raw_text = await extract_text(file)
 
     final = process_resume(client, raw_text)
 
