@@ -59,11 +59,11 @@ class Stage1Output(BaseModel):
 
 class ScoreBreakdown(BaseModel):
     """5 categories adding up to 100"""
-    content_and_metrics: int = Field(default=0, ge=0)
-    keyword_optimization: int = Field(default=0, ge=0)
-    formatting_and_structure: int = Field(default=0, ge=0)
-    experience_quality: int = Field(default=0, ge=0)
-    education_and_skills: int = Field(default=0, ge=0)
+    content_and_metrics: int = Field(default=0, ge=0, le=30)
+    keyword_optimization: int = Field(default=0, ge=0, le=25)
+    formatting_and_structure: int = Field(default=0, ge=0, le=15)
+    experience_quality: int = Field(default=0, ge=0, le=20)
+    education_and_skills: int = Field(default=0, ge=0, le=10)
 
 
 class SectionFeedback(BaseModel):

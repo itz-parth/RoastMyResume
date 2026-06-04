@@ -1,3 +1,5 @@
+import CopyButton from "../buttons/CopyButton";
+
 const ResultCard = ({ title, icon, children, variant = "default" }) => {
   const variantStyles = {
     default: "glass-card",
@@ -118,7 +120,10 @@ export const ImprovedBulletsCard = ({ bullets }) => (
               <p className="text-sm text-text-secondary line-through opacity-70">{b.original}</p>
             </div>
             <div className="p-3 rounded-xl bg-accent-green/5 border border-accent-green/10">
-              <span className="text-xs font-medium text-accent-green/70 uppercase tracking-wider mb-1 block">After</span>
+              <div className="flex items-center justify-between mb-1">
+                <span className="text-xs font-medium text-accent-green/70 uppercase tracking-wider">After</span>
+                <CopyButton text={b.improved} />
+              </div>
               <p className="text-sm text-text-primary font-medium">{b.improved}</p>
             </div>
           </li>
