@@ -8,11 +8,11 @@ STRUCTURED_RESUME_DEFAULT = {
     "raw_observations": {}
 }
 
-def process_resume(client, raw_text):
+def process_resume(client, raw_text: str, job_description: str = None):
     structured = run_stage1(client, raw_text)
     structured_data = structured.model_dump() if structured else None
 
-    analysis = run_stage2(client, structured_data)
+    analysis = run_stage2(client, structured_data, job_description)
     if analysis is None:
         raise Exception("Resume analysis failed")
 

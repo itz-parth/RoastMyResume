@@ -1,6 +1,6 @@
 from utils import extract_json, call_llm
 from schemas import Stage2Output
-from prompts.analyze_prompt import SYSTEM_PROMPT, build_user_prompt
+from prompts.analyze_prompt import get_system_prompt, build_user_prompt
 from openai import OpenAI
 
 
@@ -8,11 +8,12 @@ from openai import OpenAI
 def run_stage2(
     client: OpenAI,
     resume_data: dict | str,
+    job_description: str = None,
     model: str = "llama-3.3-70b-versatile",
 ) -> Stage2Output | None:
     messages = [
-        {"role": "system", "content": SYSTEM_PROMPT},
-        {"role": "user", "content": build_user_prompt(resume_data)},
+        {"role": "system", "content": get_system_prompt(job_description)},
+        {"role": "user", "content": build_user_prompt(resume_data, job_description)},
     ]
 
     try:

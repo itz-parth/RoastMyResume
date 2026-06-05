@@ -85,6 +85,10 @@ class Stage2Output(BaseModel):
     section_feedback: list[SectionFeedback] = []
     missing_keywords: MissingKeywords = MissingKeywords()
 
+    is_jd_modified: bool = False
+    acceptance_chance: Optional[str] = None
+    jd_tips: Optional[list[str]] = None
+
 
 # stage 3 models
 

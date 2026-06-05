@@ -1,7 +1,7 @@
 import os
 
 from dotenv import load_dotenv
-from fastapi import FastAPI, File, UploadFile
+from fastapi import FastAPI, File, Form, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from openai import OpenAI
 
@@ -25,10 +25,10 @@ client = OpenAI(
 
 
 @app.post("/analyze")
-async def analyze(file: UploadFile = File(...)):
+async def analyze(file: UploadFile = File(...), job_description: str = Form("")):
     
     raw_text = await extract_text(file)
 
-    final = process_resume(client, raw_text)
+    final = process_resume(client, raw_text, job_description or None)
 
     return final.model_dump()
