@@ -26,6 +26,12 @@ client = OpenAI(
 
 @app.post("/analyze")
 async def analyze(file: UploadFile = File(...), job_description: str = Form("")):
+
+    if file.size and file.size > 10 * 1024 * 1024:
+        raise HTTPException(
+            status_code = 400,
+            detail="File too large. Maximum size is 10 MB."
+        )
     
     raw_text = await extract_text(file)
 
