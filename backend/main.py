@@ -19,7 +19,7 @@ app.state.limiter = limiter
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=["https://roast-my-resume-chi.vercel.app"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -28,6 +28,11 @@ app.add_middleware(
 client = OpenAI(
     api_key=os.getenv("GROQ_API_KEY"), base_url="https://api.groq.com/openai/v1"
 )
+
+
+@app.get("/")
+async def root():
+    return {"message": "API Running"}
 
 
 @app.post("/analyze")

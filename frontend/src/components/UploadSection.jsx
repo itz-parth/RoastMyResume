@@ -55,7 +55,7 @@ const UploadSection = ({ onFileAnalyzed, setError, resetTrigger }) => {
 
       const progressInterval = simulateProgress();
 
-      const res = await axios.post("http://localhost:8000/analyze", formData, {
+      const res = await axios.post(`${import.meta.env.VITE_API_URL}/analyze`, formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
 
