@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useCallback } from "react";
 import "./App.css";
 import Navbar from "./components/Navbar";
 import HeroSection from "./components/HeroSection";
@@ -8,6 +8,7 @@ import ResultsSection from "./components/ResultsSection";
 const App = () => {
   const [response, setResponse] = useState(null);
   const [error, setError] = useState(null);
+  const [resetTrigger, setResetTrigger] = useState(0);
   const uploadRef = useRef(null);
 
   const scrollToUpload = () => {
@@ -22,13 +23,22 @@ const App = () => {
     }, 100);
   };
 
+  const handleReset = useCallback(() => {
+    setResponse(null);
+    setError(null);
+    setResetTrigger((prev) => prev + 1);
+    setTimeout(() => {
+      uploadRef.current?.scrollIntoView({ behavior: "smooth" });
+    }, 100);
+  }, []);
+
   return (
     <div className="min-h-screen bg-surface-base text-text-primary antialiased">
       <Navbar />
       <HeroSection onCtaClick={scrollToUpload} />
 
       <div ref={uploadRef}>
-        <UploadSection onFileAnalyzed={handleFileAnalyzed} setError={setError} />
+        <UploadSection onFileAnalyzed={handleFileAnalyzed} setError={setError} resetTrigger={resetTrigger} />
       </div>
 
       {error && (
@@ -57,7 +67,7 @@ const App = () => {
         </div>
       )}
 
-      {response && <ResultsSection data={response} />}
+      {response && <ResultsSection data={response} onReset={handleReset} />}
 
       <footer className="relative border-t border-border-subtle py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">

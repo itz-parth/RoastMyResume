@@ -11,7 +11,7 @@ import {
   VerdictCard,
 } from "./ResultCard";
 
-const ResultsSection = ({ data }) => {
+const ResultsSection = ({ data, onReset }) => {
   if (!data) return null;
 
   // backend sends missing_keywords as an object, but the card needs a flat array
@@ -74,6 +74,18 @@ const ResultsSection = ({ data }) => {
           <QuickWinsCard quickWins={data.quick_wins} />
 
           <VerdictCard verdict={data.final_verdict} roastLevel={data.roast_level} />
+
+          <div className="text-center pt-4">
+            <button
+              onClick={onReset}
+              className="inline-flex items-center gap-2 px-6 py-3 text-sm font-semibold text-accent-purple bg-accent-purple/10 border border-accent-purple/20 rounded-xl hover:bg-accent-purple/20 hover:border-accent-purple/30 transition-all duration-200"
+            >
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M3 7.5L7.5 3m0 0L12 7.5M7.5 3v13.5m13.5 0L16.5 21m0 0L12 16.5m4.5 4.5V7.5" />
+              </svg>
+              Analyze Another Resume
+            </button>
+          </div>
         </div>
       </div>
     </section>

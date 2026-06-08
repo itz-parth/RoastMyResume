@@ -1,16 +1,29 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import axios from "axios";
 import DropZone from "./DropZone";
 import JobDescriptionCard from "./JobDescriptionCard";
 import TrustBar from "./TrustBar";
 
-const UploadSection = ({ onFileAnalyzed, setError }) => {
+const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10 MB — matches backend limit
+
+const UploadSection = ({ onFileAnalyzed, setError, resetTrigger }) => {
   const [file, setFile] = useState(null);
   const [loading, setLoading] = useState(false);
   const [dragActive, setDragActive] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [jobDescription, setJobDescription] = useState("");
   const [showJobField, setShowJobField] = useState(false);
+  const [fileError, setFileError] = useState("");
+
+  // Reset all state when user clicks "Analyze another resume"
+  useEffect(() => {
+    setFile(null);
+    setFileError("");
+    setLoading(false);
+    setUploadProgress(0);
+    setJobDescription("");
+    setShowJobField(false);
+  }, [resetTrigger]);
   const simulateProgress = () => {
     setUploadProgress(0);
     const interval = setInterval(() => {
@@ -37,6 +50,7 @@ const UploadSection = ({ onFileAnalyzed, setError }) => {
     try {
       setLoading(true);
       setError(null);
+      setFileError("");
       setUploadProgress(0);
 
       const progressInterval = simulateProgress();
@@ -68,11 +82,20 @@ const UploadSection = ({ onFileAnalyzed, setError }) => {
     e.stopPropagation();
     setDragActive(false);
     const droppedFile = e.dataTransfer?.files?.[0];
-    const allowedTypes = ["application/pdf", "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "text/plain"];  
-    if (allowedTypes.includes(droppedFile?.type)) {
-      setFile(droppedFile);
-      handleAnalyze(droppedFile);
+    const allowedTypes = ["application/pdf", "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "text/plain"];
+
+    if (!droppedFile) return;
+    if (!allowedTypes.includes(droppedFile.type)) {
+      setFileError("Unsupported format. Please upload PDF, DOCX, or TXT.");
+      return;
     }
+    if (droppedFile.size > MAX_FILE_SIZE) {
+      setFileError(`File too large (${(droppedFile.size / 1024 / 1024).toFixed(1)} MB). Maximum size is 10 MB.`);
+      return;
+    }
+    setFileError("");
+    setFile(droppedFile);
+    handleAnalyze(droppedFile);
   }, [handleAnalyze]);
 
   const handleDragOver = useCallback((e) => {
@@ -89,10 +112,14 @@ const UploadSection = ({ onFileAnalyzed, setError }) => {
 
   const handleFileSelect = useCallback((e) => {
     const selected = e.target.files?.[0];
-    if (selected) {
-      setFile(selected);
-      handleAnalyze(selected);
+    if (!selected) return;
+    if (selected.size > MAX_FILE_SIZE) {
+      setFileError(`File too large (${(selected.size / 1024 / 1024).toFixed(1)} MB). Maximum size is 10 MB.`);
+      return;
     }
+    setFileError("");
+    setFile(selected);
+    handleAnalyze(selected);
   }, [handleAnalyze]);
 
   return (
@@ -114,6 +141,7 @@ const UploadSection = ({ onFileAnalyzed, setError }) => {
           loading={loading}
           dragActive={dragActive}
           uploadProgress={uploadProgress}
+          fileError={fileError}
           onDrop={handleDrop}
           onDragOver={handleDragOver}
           onDragLeave={handleDragLeave}
