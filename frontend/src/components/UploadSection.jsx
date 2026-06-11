@@ -15,6 +15,9 @@ const UploadSection = ({ onFileAnalyzed, setError, resetTrigger }) => {
   const [showJobField, setShowJobField] = useState(false);
   const [fileError, setFileError] = useState("");
 
+  const [isTakingLong, setIsTakingLong] = useState(false);
+  const isActiveUpload = uploadProgress > 0 && uploadProgress < 100;
+
   // Reset all state when user clicks "Analyze another resume"
   useEffect(() => {
     setFile(null);
@@ -37,6 +40,20 @@ const UploadSection = ({ onFileAnalyzed, setError, resetTrigger }) => {
     }, 300);
     return interval;
   };
+
+  useEffect(() => {
+    let timer
+
+    if(isActiveUpload){
+      timer = setTimeout(() => {
+        setIsTakingLong(true)
+      }, 10000)
+    }else{
+      setIsTakingLong(false)
+    }
+
+    return () => clearTimeout(timer);
+  }, [isActiveUpload])
 
   const handleAnalyze = useCallback(async (fileToUpload) => {
     if (!fileToUpload) return;
@@ -146,6 +163,7 @@ const UploadSection = ({ onFileAnalyzed, setError, resetTrigger }) => {
           onDragOver={handleDragOver}
           onDragLeave={handleDragLeave}
           onFileSelect={handleFileSelect}
+          takingLong={isTakingLong}
         />
 
         <JobDescriptionCard

@@ -6,7 +6,7 @@ const STAGES = [
   { id: "roast", label: "Crafting your roast..." },
 ];
 
-const DropZone = ({ file, loading, dragActive, uploadProgress, fileError, onDrop, onDragOver, onDragLeave, onFileSelect }) => {
+const DropZone = ({ file, loading, dragActive, uploadProgress, fileError, onDrop, onDragOver, onDragLeave, onFileSelect, takingLong }) => {
   const inputRef = useRef(null);
 
   const handleClick = useCallback(() => {
@@ -86,6 +86,32 @@ const DropZone = ({ file, loading, dragActive, uploadProgress, fileError, onDrop
                 </div>
               );
             })}
+
+            {takingLong && (
+              <div className="relative mt-4 overflow-hidden rounded-xl border border-accent-purple/25 bg-gradient-to-r from-accent-purple/[0.08] to-accent-blue/[0.08] p-4 shadow-[0_0_20px_-4px_rgba(139,92,246,0.15)]">
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-accent-purple/5 to-transparent animate-shimmer" />
+                <div className="relative flex items-start gap-3">
+                  <div className="mt-0.5 flex-shrink-0 w-8 h-8 rounded-lg bg-accent-purple/15 flex items-center justify-center">
+                    <svg className="w-4 h-4 text-accent-purple" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-medium text-accent-purple">
+                      Waking up the server
+                    </p>
+                    <p className="text-xs text-text-muted mt-0.5">
+                      It may take up to a minute. Please wait!
+                    </p>
+                  </div>
+                  <span className="flex gap-1 mt-1.5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-accent-purple/60 animate-bounce" style={{ animationDelay: "0ms" }} />
+                    <span className="w-1.5 h-1.5 rounded-full bg-accent-purple/60 animate-bounce" style={{ animationDelay: "150ms" }} />
+                    <span className="w-1.5 h-1.5 rounded-full bg-accent-purple/60 animate-bounce" style={{ animationDelay: "300ms" }} />
+                  </span>
+                </div>
+              </div>
+            )}
           </div>
 
           <div className="max-w-xs mx-auto bg-surface-elevated rounded-full h-1.5 overflow-hidden">
